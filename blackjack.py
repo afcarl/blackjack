@@ -86,6 +86,9 @@ class Deck:
     def shuffle(self):
         shuffle(self.deck)
 
+    def lastCard(self):
+        return self.deck[-1]
+
     def draw(self):
         if len(self.deck) is 0:
             return None
@@ -120,6 +123,7 @@ class User:
 
     def hitme(self, deck):
         self.hand.append(deck.draw())
+        return self.hand.lastCard()
 
 class Dealer(User):
     def __init__(self):
@@ -145,8 +149,14 @@ class Poker:
         self.human.draw(self.dealer.deck)
 
     def humanHitme(self):
-        self.human.hitme(self.dealer.deck)
+        return self.human.hitme(self.dealer.deck)
 
+    def didHumanWin(self):
+        if self.human.hand.value() > self.deck.points:
+            return False
+        if self.human.hand.value() > self.dealer.hand.value():
+            return True
+        return False
     def strongestHand(self, *hands):
         best = Deck()
         for h in hands:
@@ -187,9 +197,14 @@ def main():
                 y = sys.stdin.read(2)
                 #y = screen.getch()
                 if y[0] == 'h':
-                    p.humanHitme()
+                    c = p.humanHitme()
+                    print "Got a %s" % c
                 elif y[0] == 'f':
-                    break;
+                    if p.didHumanWin():
+                        print "You won!"
+                    else:
+                        print "You lost!"
+                    break
                 if p.human.hand.value() > p.deck.points:
                     print "you're busted!"
                     break
@@ -199,7 +214,7 @@ def main():
 
     curses.endwin() #VITAL! This closes out the menu system and returns you to the bash prompt.
     os.system('reset')
-    print "%s" % chr(x)
+    print "%s" % (x)
 
 if __name__ == "__main__":
     main()
