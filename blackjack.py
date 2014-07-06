@@ -144,6 +144,7 @@ class Poker:
         self.dealer = Dealer()
         self.human = Human()
         self.players = []
+
     def dealRound(self):
         self.dealer.draw(self.dealer.deck)
         self.human.draw(self.dealer.deck)
@@ -157,6 +158,23 @@ class Poker:
         if self.human.hand.value() > self.dealer.hand.value():
             return True
         return False
+
+    def playRound(self, human=""):
+        if human[0] == 'h':
+            c = self.humanHitme()
+            print "Got a %s" % c
+        elif human[0] == 'f':
+            if self.didHumanWin():
+                print "You won!"
+            else:
+                print "You lost!"
+            return False
+
+        if self.bustedHand() is False:
+            return False
+
+        return True
+
     def strongestHand(self, *hands):
         best = Deck()
         for h in hands:
@@ -164,29 +182,19 @@ class Poker:
                 best = h
         return best
 
-    def bustedHand(self, *hands):
-        b = []
-        for h in hands:
-            pass
-
+    def bustedHand(self):
+        if self.human.hand.value() > self.deck.points:
+            print "you're busted!"
+            return False
+        else:
+            print "You're still in the game!"
+            return True
 
 def main():
 
-
-    screen = curses.initscr() #initializes a new window for capturing key presses
-    #curses.noecho() # Disables automatic echoing of key presses (prevents program from input each key twice)
-    #curses.cbreak() # Disables line buffering (runs each key as it is pressed rather than waiting for the return key to pressed)
-    #curses.start_color() # Lets you use colors when highlighting selected menu option
-    #screen.keypad(1) # Capture input from keypad
-    
-    # Change this to use different colors when highlighting
-    #curses.init_pair(1,curses.COLOR_BLACK, curses.COLOR_WHITE) # Sets up color pair #1, it does black text with white background
-    #h = curses.color_pair(1) #h is the coloring for a highlighted menu option
-    #n = curses.A_NORMAL #n is the coloring for a non highlighted menu option
-
     while True:
         print "quit (q) or start game (s): "
-        #x = screen.getch()
+
         x = sys.stdin.read(2)
         if x[0] == 's':
             p = Poker()
@@ -195,26 +203,12 @@ def main():
                 print "Your hand is %s" % (p.human.hand.value())
                 print "Hit me (h) or fold (f)"
                 y = sys.stdin.read(2)
-                #y = screen.getch()
-                if y[0] == 'h':
-                    c = p.humanHitme()
-                    print "Got a %s" % c
-                elif y[0] == 'f':
-                    if p.didHumanWin():
-                        print "You won!"
-                    else:
-                        print "You lost!"
+
+                if p.playRound(y) is False:
                     break
-                if p.human.hand.value() > p.deck.points:
-                    print "you're busted!"
-                    break
-                h = p.strongestHand(p.dealer.hand,p.human.hand)
+
         elif x[0] == 'q':
             break
-
-    curses.endwin() #VITAL! This closes out the menu system and returns you to the bash prompt.
-    os.system('reset')
-    print "%s" % (x)
 
 if __name__ == "__main__":
     main()
