@@ -125,6 +125,7 @@ class User:
         if betAmt > self.purse:
             return False
         self.purse -= betAmt
+        return True
 
     def resetHand(self):
         self.hand.reset()
@@ -207,21 +208,23 @@ class Poker:
 
         if self.dealerHitMeDecide() is False:
             if self.didHumanWin() is True:
+                self.human.purse += self.award()
                 flag = self.won
 
         if human[0] == 's':
             if self.didHumanWin() is False:
-                self.dealer.purse = self.award()
+                self.dealer.purse += self.award()
                 flag = self.lost
             else:
-                self.human.purse = self.award()
+                self.human.purse += self.award()
                 flag = self.won
+
         if self.bustedHand(self.human.hand) is True:
             self.dealer.purse = self.award()
             flag = self.busted
 
         if self.bustedHand(self.dealer.hand) is True:
-            self.human.purse = self.award()
+            self.human.purse += self.award()
             flag = self.won
 
         if flag is None:
@@ -250,6 +253,7 @@ class Poker:
             return False
         self.pot += betAmt * 2
         self.dealer.bet(betAmt)
+        return True
 
     def bustedHand(self, hand):
         if hand.value() > self.deck.points:
@@ -274,6 +278,7 @@ def main():
                 #y = sys.stdin.read(2)
                 y = raw_input("")
                 if len(y) is 0:
+                    print "Type something\n"
                     continue
 
                 if y.split()[0] is 'b':
@@ -288,7 +293,7 @@ def main():
                     f = p.bet(1)
                     if f is False:
                         print "Can't bet that much"
-                    continue
+                        continue
                     
                 c, flag = p.playRound(y.split()[0])
 
