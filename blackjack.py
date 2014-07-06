@@ -1,6 +1,11 @@
 #!/usr/bin/env python
 from random import shuffle
 from random import choice
+
+from time import sleep
+import curses, os #curses is the interface for capturing key presses on the menu, os launches the files
+import sys
+
 '''
 def enum(*sequential, **named):
     enums = dict(zip(sequential, range(len(sequential))), **named)
@@ -112,7 +117,10 @@ class User:
     def draw(self, deck):
         self.hand.append(deck.draw())
         self.hand.append(deck.draw())
-        
+
+    def hitme(self, deck):
+        self.hand.append(deck.draw())
+
 class Dealer(User):
     def __init__(self):
         User.__init__(self)
@@ -136,6 +144,9 @@ class Poker:
         self.dealer.draw(self.dealer.deck)
         self.human.draw(self.dealer.deck)
 
+    def humanHitme(self):
+        self.human.hitme(self.dealer.deck)
+
     def strongestHand(self, *hands):
         best = Deck()
         for h in hands:
@@ -148,15 +159,47 @@ class Poker:
         for h in hands:
             pass
 
+
 def main():
-    p = Poker()
-    p.dealRound()
-    h = p.strongestHand(p.dealer.hand,p.human.hand)
-    print "Dealer"
-    print p.dealer.hand
-    print "Human"
-    print p.human.hand
-    print "Strongest"
-    print h
+
+
+    screen = curses.initscr() #initializes a new window for capturing key presses
+    #curses.noecho() # Disables automatic echoing of key presses (prevents program from input each key twice)
+    #curses.cbreak() # Disables line buffering (runs each key as it is pressed rather than waiting for the return key to pressed)
+    #curses.start_color() # Lets you use colors when highlighting selected menu option
+    #screen.keypad(1) # Capture input from keypad
+    
+    # Change this to use different colors when highlighting
+    #curses.init_pair(1,curses.COLOR_BLACK, curses.COLOR_WHITE) # Sets up color pair #1, it does black text with white background
+    #h = curses.color_pair(1) #h is the coloring for a highlighted menu option
+    #n = curses.A_NORMAL #n is the coloring for a non highlighted menu option
+
+    while True:
+        print "quit (q) or start game (s): "
+        #x = screen.getch()
+        x = sys.stdin.read(2)
+        if x[0] == 's':
+            p = Poker()
+            p.dealRound()
+            while True:
+                print "Your hand is %s" % (p.human.hand.value())
+                print "Hit me (h) or fold (f)"
+                y = sys.stdin.read(2)
+                #y = screen.getch()
+                if y[0] == 'h':
+                    p.humanHitme()
+                elif y[0] == 'f':
+                    break;
+                if p.human.hand.value() > p.deck.points:
+                    print "you're busted!"
+                    break
+                h = p.strongestHand(p.dealer.hand,p.human.hand)
+        elif x[0] == 'q':
+            break
+
+    curses.endwin() #VITAL! This closes out the menu system and returns you to the bash prompt.
+    os.system('reset')
+    print "%s" % chr(x)
+
 if __name__ == "__main__":
     main()
