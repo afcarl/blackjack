@@ -220,7 +220,7 @@ class Poker:
                 flag = self.won
 
         if self.bustedHand(self.human.hand) is True:
-            self.dealer.purse = self.award()
+            self.dealer.purse += self.award()
             flag = self.busted
 
         if self.bustedHand(self.dealer.hand) is True:
@@ -282,18 +282,20 @@ def main():
                     continue
 
                 if y.split()[0] is 'b':
+                    if len(y) < 2:
+                        print "Bet something\n"
+                        continue
+
                     f = p.bet(int(y.split()[1]))
                     if f is False:
                         print "Can't bet that much"
                     continue
+
                 if p.pot is 0:
-                    if p.human.purse is 0:
-                        print "You're broke!"
-                        break
                     f = p.bet(1)
                     if f is False:
-                        print "Can't bet that much"
-                        continue
+                        print "Can't bet that much -- you're broke!"
+                        break
                     
                 c, flag = p.playRound(y.split()[0])
 
@@ -308,11 +310,13 @@ def main():
                        print "You're busted!"
                    print "Dealer had\n%s" %(p.dealer.hand)
                    print "You lost!"
+                   if p.human.purse is 0:
+                       print "You're broke!"
+                       break
+
                    p.resetRound()
 
                 print "\n----\n"
-#                if p.didHumanWin() is False:
-#                    break
 
         elif x[0] == 'q':
             break
