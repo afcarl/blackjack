@@ -119,6 +119,12 @@ class User:
         self.name = ""
         self.deck = Deck()
         self.hand = Deck()
+        self.purse = 100
+
+    def bet(self, betAmt):
+        if betAmt > self.purse:
+            return False
+        self.purse -= betAmt
 
     def resetHand(self):
         self.hand.reset()
@@ -141,13 +147,6 @@ class Dealer(User):
 class Human(User):
     def __init__(self):
         User.__init__(self)
-        self.purse = 100
-        self.bet = 0
-
-    def bet(self, betAmt):
-        if betAmt > self.purse:
-            return False
-        self.purse -= betAmt
 
 class Poker:
     def __init__(self):
@@ -159,6 +158,7 @@ class Poker:
         self.lost = 'lost'
         self.busted = 'busted'
         self.playable = 'playable'
+        self.pot = 0
 
     def resetRound(self):
         for i in self.human.hand.deck:
@@ -187,8 +187,10 @@ class Poker:
         return False
 
     def dealerHitMeDecide(self):
-        if self.dealer.hand.value < 17:
+        if self.dealer.hand.value() < 17:
             self.dealerHitme()
+            return True
+        return False
 
     def didHumanWin(self):
         if self.human.hand.value() > self.deck.points:
@@ -202,22 +204,29 @@ class Poker:
         flag = None
         if human[0] == 'h':
             c = self.humanHitme()
-        elif human[0] == 's':
-            self.dealerHitMeDecide()            
+
+        if self.dealerHitMeDecide() is False:
+            print "---\n%s" %(self.dealer.hand)
             if self.didHumanWin() is True:
                 flag = self.won
 
-        self.dealerHitMeDecide()
-
-        if self.human.hand.value <= self.dealer.hand.value:
-            flag = self.lost
-
+        if human[0] == 's':
+            if self.didHumanWin() is False:
+                self.dealer.purse = self.award()
+                flag = self.lost
+            else:
+                self.human.purse = self.award()
+                flag = self.won
         if self.bustedHand(self.human.hand) is True:
+            self.dealer.purse = self.award()
             flag = self.busted
 
         if self.bustedHand(self.dealer.hand) is True:
+            self.human.purse = self.award()
             flag = self.won
-            
+
+        if flag is None:
+            flag = self.playable
         return (c,flag)
 
     def strongestHand(self, *hands):
@@ -232,8 +241,16 @@ class Poker:
             return False
         return True
 
+    def award(self):
+        purseWinner = self.pot
+        self.pot = 0
+        return purseWinner
+
     def bet(self, betAmt):
-        return self.human.takeAway(betAmt)
+        if self.human.bet(betAmt) is False:
+            return False
+        self.pot += betAmt * 2
+        self.dealer.bet(betAmt)
 
     def bustedHand(self, hand):
         if hand.value() > self.deck.points:
@@ -257,6 +274,8 @@ def main():
                 print "Hit me (h) or stand (s) or bet (b ### )"
                 #y = sys.stdin.read(2)
                 y = raw_input("")
+                if len(y) is 0:
+                    continue
                 if y.split()[0] is 'b':
                     f = p.bet(int(y.split()[1]))
                     if f is False:
@@ -273,6 +292,7 @@ def main():
                 elif flag is 'lost' or flag is 'busted':
                    if flag is 'busted':
                        print "You're busted!"
+                   print "Dealer had\n%s" %(p.dealer.hand)
                    print "You lost!"
                    p.resetRound()
 
