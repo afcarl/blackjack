@@ -206,7 +206,6 @@ class Poker:
             c = self.humanHitme()
 
         if self.dealerHitMeDecide() is False:
-            print "---\n%s" %(self.dealer.hand)
             if self.didHumanWin() is True:
                 flag = self.won
 
@@ -276,11 +275,21 @@ def main():
                 y = raw_input("")
                 if len(y) is 0:
                     continue
+
                 if y.split()[0] is 'b':
                     f = p.bet(int(y.split()[1]))
                     if f is False:
                         print "Can't bet that much"
                     continue
+                if p.pot is 0:
+                    if p.human.purse is 0:
+                        print "You're broke!"
+                        break
+                    f = p.bet(1)
+                    if f is False:
+                        print "Can't bet that much"
+                    continue
+                    
                 c, flag = p.playRound(y.split()[0])
 
                 if c != None:
