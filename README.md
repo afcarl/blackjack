@@ -77,6 +77,6 @@ human purse.
 
 As a final piece, let's look at the average value of the purse, 
 keeping in mind that the game starts with one a 100 and ends when
-it's 0
+it's 0.
 
 ![18, hit or stand, average purse value](18hitorstandPrintPurseByAverage.png)
