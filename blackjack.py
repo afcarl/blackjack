@@ -296,6 +296,7 @@ def findBestStrategy():
     cmd = {'hitme': 'h', 'stand':'s'}
 
     best = 0
+    l = [0 for i in range(1000)]
     for i in range(1000):
             p = Poker()
             p.dealRound()
@@ -307,7 +308,7 @@ def findBestStrategy():
                     f = p.bet(1)
                     if f is False:
                         break
-                if h < 16:
+                if h < 18:
                     c, flag = p.playRound(cmd['hitme'])
                 else:
                     c, flag = p.playRound(cmd['stand'])
@@ -315,10 +316,12 @@ def findBestStrategy():
                 if flag == 'won' or flag == 'lost' or flag == 'busted':
                     p.resetRound()
                 if p.human.purse == 0:
-                    print "%s" % (j)
+#                    print "%s" % (j)
                     if j > best:
                         best = j
                     break
+                else:
+                    print "%s, %s" % (j, p.human.purse)
                 
     pass
 if __name__ == "__main__":
