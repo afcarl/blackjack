@@ -14,6 +14,12 @@ I took my code and created a simulation to test out different
 strategies. The total number of hands played was output for
 1000 games of poker with the strategy
 
+I ran it simply with my main calling findBestStrategy()
+
+    python blackjack.py > col
+
+And in ipython,
+
     df = pd.read_csv('col')
     df.hist(bins=100)
     plt.show()
