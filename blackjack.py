@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 from random import shuffle
 from random import choice
+import random
 
 from time import sleep
 import os
@@ -47,6 +48,8 @@ class Deck:
         v = 0
         ace = 0
         for c in self.deck:
+            if c is None:
+                continue
             if c.number is 'ace':
                 ace += 1
             else:
@@ -288,5 +291,36 @@ def main():
         elif x[0] == 'q':
             break
 
+def findBestStrategy():
+    l = [0 for i in range(14)]
+    cmd = {'hitme': 'h', 'stand':'s'}
+
+    best = 0
+    for i in range(1000):
+            p = Poker()
+            p.dealRound()
+            j = 0
+
+            while True:
+                h = p.human.hand.value()
+                if p.pot is 0:
+                    f = p.bet(1)
+                    if f is False:
+                        break
+                if h < 16:
+                    c, flag = p.playRound(cmd['hitme'])
+                else:
+                    c, flag = p.playRound(cmd['stand'])
+                j += 1
+                if flag == 'won' or flag == 'lost' or flag == 'busted':
+                    p.resetRound()
+                if p.human.purse == 0:
+                    print "%s" % (j)
+                    if j > best:
+                        best = j
+                    break
+                
+    pass
 if __name__ == "__main__":
-    main()
+    #main()
+    findBestStrategy()
