@@ -25,7 +25,8 @@ And in ipython,
     plt.show()
 
 No fancy data analysis for now, let's just load it up and
-create a histogram with it.
+create a histogram of hands of poker until the human player
+goes broke.
 
 ### 16, hit or stand
 
