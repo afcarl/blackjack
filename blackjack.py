@@ -3,35 +3,10 @@ from random import shuffle
 from random import choice
 
 from time import sleep
-import curses, os #curses is the interface for capturing key presses on the menu, os launches the files
+import os
 import sys
 
-'''
-def enum(*sequential, **named):
-    enums = dict(zip(sequential, range(len(sequential))), **named)
-    return type('Enum', (), enums)
 
-
-Suite = enum(hearts=1,
-             diamonds=2,
-             clubs=3,
-             spades=4)
-
-Number = enum(ace=1,
-              two=2,
-              three=3,
-              four=4,
-              five=5,
-              six=6,
-              seven=7,
-              eight=8,
-              nine=9,
-              ten=10,
-              jack=11,
-              queen=12,
-              king=13
-              )
-'''
 Suite = ['hearts', 'diamonds', 'clubs', 'spades']
 Number = ['ace','two','three','four','five','six','seven',
           'eight','nine','ten','jack','queen','king']
@@ -162,11 +137,8 @@ class Poker:
         self.pot = 0
 
     def resetRound(self):
-        for i in self.human.hand.deck:
-            if i != None:
-                self.dealer.deck.append(i)
 
-        self.dealer.resetHand()
+        self.dealer = Dealer() #reset the dealer deck, too
         self.human.resetHand()
         self.dealRound()
 
@@ -237,11 +209,6 @@ class Poker:
             if h.value() > best.value():
                 best = h
         return best
-
-    def didHumanWin(self):
-        if self.bustedHand(self.human.deck) or self.human.hand.value() < self.dealer.hand.value():
-            return False
-        return True
 
     def award(self):
         purseWinner = self.pot
