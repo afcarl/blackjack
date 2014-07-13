@@ -308,20 +308,23 @@ def findBestStrategy():
                     f = p.bet(1)
                     if f is False:
                         break
-                if h < 18:
+                if h < 17:
                     c, flag = p.playRound(cmd['hitme'])
                 else:
                     c, flag = p.playRound(cmd['stand'])
-                j += 1
+
                 if flag == 'won' or flag == 'lost' or flag == 'busted':
+                    if flag == 'won':
+                        j += 1                        
                     p.resetRound()
                 if p.human.purse == 0:
-#                    print "%s" % (j)
+                    print "%s" % (j)
                     if j > best:
                         best = j
                     break
                 else:
-                    print "%s, %s" % (j, p.human.purse)
+#                    print "%s, %s" % (j, p.human.purse)
+                    pass
                 
     pass
 if __name__ == "__main__":

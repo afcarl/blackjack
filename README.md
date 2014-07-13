@@ -81,3 +81,26 @@ keeping in mind that the game starts with one a 100 and ends when
 it's 0.
 
 ![18, hit or stand, average purse value](img/18hitorstandPrintPurseByAverage.png)
+
+
+### Time to win
+
+Let's see what histogram for total hands played until one goes broke
+
+First, with a 18, hit or stand strategy
+
+![18, average number of wins](img/18WinLoss.png)
+
+
+With a 17 hit or stand strategy, we seem to do a little bit better
+
+![17, number of wins](img/17winLos.png)
+
+Still, in an average casino, a few dozen hands of poker can take
+a while, so maybe a player could get comp'ed by the casino for free drinks, a 
+night out, even some free food if they make poker look easily to convince 
+other visitors that it's worth their time (and money).
+
+In reality, real poker games aren't going to go like this, and I imagine
+that the amount of money bet is different, as well as the speed of the
+poker games, along with the special rules I didn't implement.
