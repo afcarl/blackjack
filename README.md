@@ -33,7 +33,7 @@ When we have a more conservative strategy, we seem to get
 a bigger spread of values. Some games go on as long as 17
 but others seem to end kind of quicker, too
 
-![16, hit or stand](16hitorstand.png)
+![16, hit or stand](img/16hitorstand.png)
 
 ### 17, hit or stand
 
@@ -43,7 +43,7 @@ and will stand when it's 17 or higher.
 Let's see what happens when our human player does something
 similar.
 
-![17, hit or stand](17hitorstand.png)
+![17, hit or stand](img/17hitorstand.png)
 
 ### 17, hit or stand, randomly bet 1 to 3 dollars
 
@@ -51,7 +51,7 @@ Well, this was unfortunate. I'm willing to 'bet' that
 randomly betting is not a good strategy.
 
 
-![17, hit or stand](17hitorstandRandomBet.png)
+![17, hit or stand](img/17hitorstandRandomBet.png)
 
 ### 18, hit or stand
 
@@ -59,24 +59,24 @@ It seems like we get slightly better results with a more
 aggresive strategy. It's interesting that there are a few
 games that got to almost 1000 rounds!
 
-![18, hit or stand](18hitorstand.png)
+![18, hit or stand](img/18hitorstand.png)
 
 ### 19, hit or stand
 
 Aggresive is good, until we get to here. It seems like we 
 do very poorly.
 
-![19, hit or stand](19hitorstand.png)
+![19, hit or stand](img/19hitorstand.png)
 
 ### Average purse size
 
 Let's have a look at the histogram of average values for the
 human purse.
 
-![18, hit or stand histogram of purse value](18hitorstandHist.png)
+![18, hit or stand histogram of purse value](img/18hitorstandHist.png)
 
 As a final piece, let's look at the average value of the purse, 
 keeping in mind that the game starts with one a 100 and ends when
 it's 0.
 
-![18, hit or stand, average purse value](18hitorstandPrintPurseByAverage.png)
+![18, hit or stand, average purse value](img/18hitorstandPrintPurseByAverage.png)
