@@ -328,5 +328,8 @@ def findBestStrategy():
                 
     pass
 if __name__ == "__main__":
-    #main()
-    findBestStrategy()
+    if len(sys.argv) == 2 and sys.argv[1] == '-f':
+        findBestStrategy()
+    else:
+        main()
+
