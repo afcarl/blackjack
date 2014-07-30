@@ -105,4 +105,4 @@ In reality, real poker games aren't going to go like this, and I imagine
 that the amount of money bet is different, as well as the speed of the
 poker games, along with the special rules I didn't implement.
 
-![](http://mjk.freeshell.org/a.gif)
+![](http://mjk.freeshell.org/blackjack.gif)
