@@ -106,3 +106,4 @@ that the amount of money bet is different, as well as the speed of the
 poker games, along with the special rules I didn't implement.
 
 ![](http://mjk.freeshell.org/blackjack.gif)
+[![ghit.me](https://ghit.me/badge.svg?repo=emmjaykay/blackjack)](https://ghit.me/repo/emmjaykay/blackjack)
